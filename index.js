@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const categoriesRoutes = require('./controllers/categories')
 const userreviews = require('./router/reviews')
 const db = require("./config/db"); // Import koneksi database dari config/db.js
 
@@ -17,8 +18,11 @@ app.get('/reviews', (req, res) => {
 });
 })
 
+//router
 app.use(userreviews)
+app.use('/kategori', categoriesRoutes);
 
+//start server
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

@@ -14,5 +14,13 @@
     "mysql": "^2.18.1",
     "nodemon": "^3.1.9"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fahmiihfaa/xiipplg3_21_fahmiihfa_library.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fahmiihfaa/xiipplg3_21_fahmiihfa_library/issues"
+  },
+  "homepage": "https://github.com/fahmiihfaa/xiipplg3_21_fahmiihfa_library#readme",
   "description": ""
 }

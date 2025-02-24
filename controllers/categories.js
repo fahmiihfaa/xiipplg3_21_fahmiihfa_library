@@ -1,61 +1,65 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const db = require('../config/db');
+const db = require("../config/db");
 
-//Get all categories
-router.get('/categories', async (req, res) => {
+// GET all categories
+router.get("/categories", async (req, res) => {
     try {
-        const [results] = await db.query('SELECT * FROM kategori');
+        const [results] = await db.query("SELECT * FROM kategori");
         res.status(200).json(results);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
-//add a new category
-router.post('/categories', (req, res) => {
+// POST new category
+router.post("/categories", async (req, res) => {
     const { name } = req.body;
     if (!name) {
-        return res.status(400).json({error: 'Name is required'});
+        return res.status(400).json({ error: "Nama is required" });
     }
 
-    db.query('INSERT INTO kategori (name) VALUES (?)', [name], (err, results) => {
-        if (err) {
-            res.status(500).json({error: err.message});
-        }else {
-            res.status(201).json({id: results.insertId, name});
-        }
-    });
+    try {
+        const [result] = await db.query("INSERT INTO kategori (name) VALUES (?)", [name]);
+        res.status(201).json({ message: "Category added", id: result.insertId });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
-//edit category
-router.put('/:id', (req, res) => {
+// PUT update category
+router.put("/categories/:id", async (req, res) => {
     const { name } = req.body;
     const { id } = req.params;
+
     if (!name) {
-        return res.status(400).json({error: 'Name is required'});
+        return res.status(400).json({ error: "Name is required" });
     }
 
-    db.query('UPDATE kategori SET name = ? WHERE id = ?', [name, id], (err, results) => {
-        if (err) {
-            res.status(500).json({error: err.message});
-        }else {
-            res.status(201).json({message : 'Category Updated',id, name});
+    try {
+        const [result] = await db.query("UPDATE kategori SET name = ? WHERE id = ?", [name, id]);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "Category not found" });
         }
-    });
+        res.status(200).json({ message: "Category updated", id, name });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
-//delete category
-router.delete('/:id', (req, res) => {
+// DELETE category
+router.delete("/categories/:id", async (req, res) => {
     const { id } = req.params;
 
-    db.query('DELETE FROM kategori WHERE id = ?', [id], (err, results) => {
-        if (err) {
-            res.status(500).json({error: err.message});
-        }else {
-            res.status(201).json({message : 'Category Deleted',id});
+    try {
+        const [result] = await db.query("DELETE FROM kategori WHERE id = ?", [id]);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "Category not found" });
         }
-    });
+        res.status(200).json({ message: "Category deleted", id });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 module.exports = router;

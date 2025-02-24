@@ -3,18 +3,17 @@ const router = express.Router();
 const db = require('../config/db');
 
 //Get all categories
-router.get('/', (req, res) => {
-    db.query('SELECT * FROM kategori', (err, results) => {
-        if (err) {
-            res.status(500).json({error: err.message});
-        }else {
-            res.status(200).json(results);
-        }
-    });
+router.get('/categories', async (req, res) => {
+    try {
+        const [results] = await db.query('SELECT * FROM kategori');
+        res.status(200).json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 //add a new category
-router.post('/', (req, res) => {
+router.post('/categories', (req, res) => {
     const { name } = req.body;
     if (!name) {
         return res.status(400).json({error: 'Name is required'});

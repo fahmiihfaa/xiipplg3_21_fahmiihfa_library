@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const userreviews = require('./router/reviews')
 const userrouter = require('./router/book')
-const categoriesroutes = require('./controllers/categories')
+const categoriesroutes = require('./router/categories')
 const userRouter = require('./router/userRouter')
 const loansRouter = require('./router/loans')
 
@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 app.use(userreviews)
 app.use(userrouter)
 app.use(categoriesroutes)
-app.use('/api', userRouter)
+app.use( userRouter)
 app.use(loansRouter);
 
 app.listen(port, () => {

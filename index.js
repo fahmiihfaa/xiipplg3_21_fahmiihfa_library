@@ -4,7 +4,7 @@ const userreviews = require('./router/reviews')
 const userrouter = require('./router/book')
 const categoriesroutes = require('./controllers/categories')
 const userRouter = require('./router/userRouter')
-const loansRouter = require('./controllers/loans')
+const loansRouter = require('./router/loans')
 
 const port = 3000
 
@@ -19,7 +19,7 @@ app.use(userreviews)
 app.use(userrouter)
 app.use(categoriesroutes)
 app.use('/api', userRouter)
-app.use("./loans", loansRouter);
+app.use(loansRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
